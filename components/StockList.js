@@ -29,7 +29,7 @@ export default function StockList() {
             <div className="p-6 border-b border-subtle">
                 <h3 className="font-semibold text-lg">Portfolio Holdings</h3>
             </div>
-            <div className="overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto">
                 <table className="stock-table">
                     <thead>
                         <tr>
@@ -156,6 +156,79 @@ export default function StockList() {
                 </table>
             </div>
 
+        </div>
+
+            {/* Mobile Card View */ }
+            <div className="md:hidden">
+                {holdings.map(holding => {
+                    const quote = marketData[holding.symbol];
+                    const price = quote ? parseFloat(quote.price) : 0;
+                    const change = quote ? parseFloat(quote.changePercent) : 0;
+                    const marketValue = price * holding.quantity;
+                    const marketValueCNY = marketValue * (quote ? EXCHANGE_RATES[quote.currency] : 1);
+                    const isUp = change >= 0;
+
+                    return (
+                        <div key={holding.id} className="p-4 border-b border-subtle last:border-0 hover:bg-panel-hover transition-colors" onClick={() => handleSellClick(holding)}>
+                            <div className="flex justify-between items-start mb-2">
+                                <div>
+                                    <div className="font-bold text-lg">{holding.symbol}</div>
+                                    <div className="text-xs text-muted">{quote?.name || 'Loading...'}</div>
+                                </div>
+                                <div className="text-right">
+                                    <div className="font-mono font-bold">
+                                        {formatCurrency(marketValueCNY)}
+                                    </div>
+                                    <div className={`text-xs font-mono ${marketValueCNY - (holding.quantity * holding.costBasis * (quote ? EXCHANGE_RATES[quote.currency] : 1)) >= 0 ? 'text-up' : 'text-down'}`}>
+                                        {formatCurrency(marketValueCNY - (holding.quantity * holding.costBasis * (quote ? EXCHANGE_RATES[quote.currency] : 1)))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center text-sm">
+                                <div className="text-muted">
+                                    <span className={`text-xs px-1.5 py-0.5 rounded mr-2 bg-opacity-20 ${quote?.market === 'US' ? 'bg-blue-500 text-blue-300' :
+                                        quote?.market === 'HK' ? 'bg-purple-500 text-purple-300' :
+                                            'bg-red-500 text-red-300'
+                                        }`}>
+                                        {quote?.market || 'N/A'}
+                                    </span>
+                                    {holding.quantity} shares
+                                </div>
+                                <div className={`font-mono ${isUp ? 'text-up' : 'text-down'}`}>
+                                    {quote ? (
+                                        <>
+                                            {quote.currency === 'USD' ? '$' : quote.currency === 'HKD' ? 'HK$' : '¥'}
+                                            {price.toFixed(2)} ({change > 0 ? '+' : ''}{change.toFixed(2)}%)
+                                        </>
+                                    ) : '-'}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+                
+                {/* Cash Card Mobile */}
+                <div className="p-4 border-t-2 border-subtle bg-panel-hover">
+                    <div className="flex justify-between items-center mb-2">
+                        <div className="font-bold text-gold">CASH</div>
+                        <div className="font-mono font-bold text-gold">
+                            {formatCurrency(
+                                cash.USD * EXCHANGE_RATES.USD +
+                                cash.HKD * EXCHANGE_RATES.HKD +
+                                cash.CNY * EXCHANGE_RATES.CNY
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex justify-between text-xs text-muted">
+                        <span>Global Balance</span>
+                        <span>
+                            {totalNetWorth > 0 ?
+                                ((cash.USD * EXCHANGE_RATES.USD + cash.HKD * EXCHANGE_RATES.HKD + cash.CNY * EXCHANGE_RATES.CNY) / totalNetWorth * 100).toFixed(1)
+                                : '0.0'}%
+                        </span>
+                    </div>
+                </div>
+            </div>
 
             <SellAssetModal
                 isOpen={sellModalOpen}
