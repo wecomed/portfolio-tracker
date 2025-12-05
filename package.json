@@ -1,0 +1,19 @@
+{
+  "name": "portfolio-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "lucide-react": "^0.292.0",
+    "next": "14.0.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "recharts": "^2.9.3",
+    "yahoo-finance2": "^2.8.1"
+  }
+}

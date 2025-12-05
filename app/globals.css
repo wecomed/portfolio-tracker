@@ -1,0 +1,117 @@
+:root {
+  --bg-app: #0f172a;
+  --bg-panel: rgba(30, 41, 59, 0.6);
+  --bg-panel-hover: rgba(30, 41, 59, 0.8);
+  
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-primary: #6366f1; /* Indigo */
+  --accent-glow: rgba(99, 102, 241, 0.3);
+  
+  --color-up: #10b981; /* Emerald */
+  --color-down: #ef4444; /* Red */
+  --color-gold: #f59e0b; /* Amber for Cash */
+
+  --border-subtle: rgba(148, 163, 184, 0.1);
+  --glass-blur: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-panel:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.text-up { color: var(--color-up); }
+.text-down { color: var(--color-down); }
+.text-gold { color: var(--color-gold); }
+
+/* Table Styles */
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stock-table th {
+  text-align: left;
+  padding: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stock-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stock-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
